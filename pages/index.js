@@ -1,14 +1,15 @@
 import React from 'react'
 import Link from 'next/link'
 import Head from '../components/head'
-import Nav from '../components/nav'
+import Form from '../components/form'
+
 
 
 
 const Home = () => (
   <div>
     <Head title="Home" />
-    <Nav />
+    <Form/>
 
     <div className="hero">
       

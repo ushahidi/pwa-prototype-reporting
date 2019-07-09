@@ -1,5 +1,5 @@
-import React from 'react'
-import Link from 'next/link'
+import React from "react";
+import Link from "next/link";
 
 export default class Form extends React.Component {
   state = {
@@ -9,7 +9,6 @@ export default class Form extends React.Component {
   };
 
   change = e => {
-    this.props.onChange({ [e.target.name]: e.target.value });
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -17,7 +16,7 @@ export default class Form extends React.Component {
 
   onSubmit = e => {
     e.preventDefault();
-    // this.props.onSubmit(this.state);
+
     this.setState({
       title: "",
       description: "",
@@ -32,32 +31,42 @@ export default class Form extends React.Component {
 
   render() {
     return (
+      
       <form>
+      <div>
+        <label for = "title" >Title</label> 
         <input
           name="title"
           placeholder="Title"
           value={this.state.title}
           onChange={e => this.change(e)}
         />
-        <br />
+        </div>
+       
+        <div>
+        <label for = "description" >Description</label> 
         <input
-          name="description"
+          name=""description
+          
           placeholder="Description"
           value={this.state.description}
           onChange={e => this.change(e)}
         />
-        <br />
+        </div>
+        <div>
+        <label for = "textField" >Text Field</label> 
         <input
           name="textField"
           placeholder="Text Field"
           value={this.state.textField}
           onChange={e => this.change(e)}
         />
-        <br />
+        </div>
+        <div>
         <button onClick={e => this.onSubmit(e)}>Submit</button>
+        </div>
       </form>
+      
     );
   }
 }
-
-
