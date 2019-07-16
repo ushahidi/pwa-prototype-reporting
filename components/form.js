@@ -2,29 +2,41 @@ import React from "react";
 import Link from "next/link";
 
 export default class Form extends React.Component {
-  state = {
-    title: "",
-    description: "",
-    textField: ""
-  };
-
+  constructor() {
+    super();
+    this.state = { formFields: [], formData: {} };
+}
   // Make state targets equal to the value of input fields
   change = e => {
     this.setState({
+      formData: {
+        ...this.state.formData,
       [e.target.name]: e.target.value
+      }
     });
   };
+
+      // Fetch the data form fields from API, use it in state
+      componentDidMount() {
+        fetch(
+            'https://rominacsvsms.api.ushahidi.io/api/v3/forms/14/attributes?order=asc&orderby=priority'
+        )
+            .then(res => res.json())
+            .then(data => {
+                this.setState({
+                    formFields: data.results
+                });
+            });
+    }
   
   // Handler for when the submit button is pressed
   onSubmit = e => {
     e.preventDefault();
 
-    console.log(this.state);
-
     // Make a post request to Ushahidi sever
     fetch("https://rominacsvsms.ushahidi.io/posts/create/14", {
       method: "POST",
-      body: JSON.stringify(this.state),
+      body: JSON.stringify(this.state.formData),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
@@ -40,48 +52,37 @@ export default class Form extends React.Component {
         console.log(error);
       });
 
-    this.setState({
-      title: "",
-      description: "",
-      textField: ""
+      this.setState({
+        formData: {}
     });
-  };
+};
 
-  render() {
-    return (
+ // Create an array of elemets to be rendered in the form
+ FormInputs = props => {
+  return props.fields.map(field => {
+      return (
+          <div key={field.key}>
+              <label htmlFor={field.label}>{field.label}</label>
+              <input
+                  type={field.input}
+                  name={field.label}
+                  placeholder={`Enter the ${field.label}`}
+                  value={this.state.formData[`${field.label}`]}
+                  onChange={e => this.change(e)}
+              />
+          </div>
+      );
+  });
+};
+
+render() {
+  return (
       <form>
-        <div>
-          <label for="title">Title</label>
-          <input
-            name="title"
-            placeholder="Title"
-            value={this.state.title}
-            onChange={e => this.change(e)}
-          />
-        </div>
-
-        <div>
-          <label for="description"> Description</label>
-          <input
-            name="description"
-            placeholder="Description"
-            value={this.state.description}
-            onChange={e => this.change(e)}
-          />
-        </div>
-        <div>
-          <label for="textField">Text Field</label>
-          <input
-            name="textField"
-            placeholder="Text Field"
-            value={this.state.textField}
-            onChange={e => this.change(e)}
-          />
-        </div>
-        <div>
-          <button onClick={e => this.onSubmit(e)}>Submit</button>
-        </div>
+          <this.FormInputs fields={this.state.formFields} />
+          <div>
+              <button onClick={e => this.onSubmit(e)}>Submit</button>
+          </div>
       </form>
-    );
-  }
+  );
+}
 }
