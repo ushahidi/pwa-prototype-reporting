@@ -43,7 +43,7 @@ export default class Form extends React.Component {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
-                    Authentication: 'large-auth-string'
+                    Authorization: 'large-auth-string'
                 }
             })
                 .then(response => {
@@ -69,7 +69,7 @@ export default class Form extends React.Component {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                Authentication: 'Bearer ' + this.state.token
+                Authorization: 'Bearer ' + this.state.token
             }
         })
             .then(response => {
