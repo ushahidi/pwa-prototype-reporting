@@ -69,7 +69,7 @@ export default class Form extends React.Component {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + this.state.token
+                Authorization:  `Bearer ${this.state.token.access_token}`
             }
         })
             .then(response => {
