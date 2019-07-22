@@ -23,7 +23,7 @@ export default class Form extends React.Component {
     let formFields = JSON.parse(localStorage.getItem("Form Fields"));
     if (!(Array.isArray(formFields) && formFields.length)) {
       fetch(
-        "https://rominacsvsms.api.ushahidi.io/api/v3/forms/14/attributes?order=asc&orderby=priority"
+        "baseUrl/api/v3/forms/14/attributes?order=asc&orderby=priority"
       )
         .then(response => {
           if (response.ok) {
@@ -45,7 +45,7 @@ export default class Form extends React.Component {
 
     let token = JSON.parse(localStorage.getItem("Bearer Token"));
     if (!token) {
-      fetch("https://rominacsvsms.api.ushahidi.io/oauth/token", {
+      fetch("baseUrl/oauth/token", {
         method: "POST",
         body: JSON.stringify({
           scope: "*",
@@ -84,12 +84,12 @@ export default class Form extends React.Component {
     localStorage.setItem("Bearer Token", JSON.stringify(this.state.token));
   }
 
-  // Handler htmlFor when the submit button is pressed
+  // Handler html For when the submit button is pressed
   onSubmit = e => {
     e.preventDefault();
 
     // Make a post request to Ushahidi sever
-    fetch("https://rominacsvsms.api.ushahidi.io/api/v3/posts", {
+    fetch("baseUrl/api/v3/posts", {
       method: "POST",
       body: JSON.stringify(this.state.formData),
       headers: {
