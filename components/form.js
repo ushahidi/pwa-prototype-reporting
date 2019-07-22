@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Users from "./Users";
 
 export default class Form extends React.Component {
   constructor() {
@@ -51,8 +52,8 @@ export default class Form extends React.Component {
           client_secret: "35e7f0bca957836d05ca0492211b0ac707671261",
           client_id: "ushahidiui",
           grant_type: "password",
-          password: "hellohello",
-          username: "menidhikjha@gmail.com"
+          password: " ",
+          username: " "
         }),
         headers: {
           Accept: "application/json",
@@ -112,7 +113,7 @@ export default class Form extends React.Component {
     });
   };
 
-  // Create an array of elemets to be rendered in the form
+  // Create an array of elements to be rendered in the form
   FormInputs = props => {
     return props.fields.map(field => {
       return (
