@@ -1,7 +1,4 @@
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import AppBar from "material-ui/AppBar";
-import RaisedButton from "material-ui/RaisedButton";
-import TextField from "material-ui/TextField";
+import React from 'react';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +10,7 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <MuiThemeProvider>
+       
           <div>
             <AppBar title="Login" />
             <TextField
@@ -34,12 +31,8 @@ class Login extends Component {
               onClick={event => this.handleClick(event)}
             />
           </div>
-        </MuiThemeProvider>
       </div>
     );
   }
 }
-const style = {
-  margin: 15
-};
 export default Login;
