@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Users from "./Users";
+import Login from "./login";
 
 export default class Form extends React.Component {
   constructor() {
@@ -23,7 +24,7 @@ export default class Form extends React.Component {
     let formFields = JSON.parse(localStorage.getItem("Form Fields"));
     if (!(Array.isArray(formFields) && formFields.length)) {
       fetch(
-        "baseUrl/api/v3/forms/14/attributes?order=asc&orderby=priority"
+        "baseUrl"+"/api/v3/forms/14/attributes?order=asc&orderby=priority"
       )
         .then(response => {
           if (response.ok) {
@@ -45,7 +46,7 @@ export default class Form extends React.Component {
 
     let token = JSON.parse(localStorage.getItem("Bearer Token"));
     if (!token) {
-      fetch("baseUrl/oauth/token", {
+      fetch("baseUrl"+"/oauth/token", {
         method: "POST",
         body: JSON.stringify({
           scope: "*",
