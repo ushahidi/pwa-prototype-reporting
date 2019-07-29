@@ -35,7 +35,7 @@ export default class Form extends React.Component {
         const tokenFetchTime = this.state.token.fetching_time;
         const expirationTime = this.state.token.expires_in;
         if (currentTime < tokenFetchTime + expirationTime) {
-            valid = true;
+            isValid = true;
         }
         return isValid;
     }
