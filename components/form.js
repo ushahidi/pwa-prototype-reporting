@@ -2,17 +2,17 @@ import React from 'react';
 import Link from 'next/link';
 import { Person } from './Users';
 
-const baseUrl = 'https://rominacsvsms.api.ushahidi.io';
+const baseUrl=process.env.baseUrl;
 
 export default class Form extends React.Component {
     constructor() {
         super();
         this.state = {
             token: {
-                access_token: '',
-                expires_in: 0,
-                refresh_token: '',
-                token_type: ''
+                accessToken: '',
+                expiresIn: 0,
+                refreshToken: '',
+                tokenType: ''
             },
             formFields: [],
             formData: {}
@@ -47,9 +47,9 @@ export default class Form extends React.Component {
                 method: 'POST',
                 body: JSON.stringify({
                     scope: '*',
-                    client_secret: '35e7f0bca957836d05ca0492211b0ac707671261',
-                    client_id: 'ushahidiui',
-                    grant_type: 'password',
+                    clientSecret: '35e7f0bca957836d05ca0492211b0ac707671261',
+                    clientId: 'ushahidiui',
+                    grantType: 'password',
                     password: Person.password,
                     username: Person.userName
                 }),
