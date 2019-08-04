@@ -47,23 +47,19 @@ export default class Form extends React.Component {
                 method: 'POST',
                 body: JSON.stringify({
                     scope: '*',
-                    clientSecret: '35e7f0bca957836d05ca0492211b0ac707671261',
-                    clientId: 'ushahidiui',
-                    grantType: 'password',
+                    clientSecret: process.env.clientSecret,
+                    clientId: process.env.clientId,
+                    grantType: process.env.grantType,
                     password: Person.password,
                     username: Person.userName
                 }),
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    Authorization: 'large-auth-string'
-                }
+                
             })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
+                .then(statusCode=> {
+                    if (statusCode.ok) {
+                        return statusCode.json();
                     } else {
-                        throw new Error('Token fetching response is not ok.');
+                        throw new Error('Status Code is not valid.');
                     }
                 })
                 .then(data =>
