@@ -47,9 +47,9 @@ export default class Form extends React.Component {
                 method: 'POST',
                 body: JSON.stringify({
                     scope: '*',
-                    clientSecret: process.env.clientSecret,
-                    clientId: process.env.clientId,
-                    grantType: process.env.grantType,
+                    client_secret: process.env.client_secret,
+                    client_id: process.env.client_id,
+                    grant_type: process.env.grant_type,
                     password: Person.password,
                     username: Person.userName
                 }),
