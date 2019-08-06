@@ -7,9 +7,8 @@ const fetchBearerToken = () => {
       scope: "*",
       client_secret: process.env.client_secret,
       client_id: process.env.client_id,
-      grant_type: process.env.grant_type,
-      password: Person.password,
-      username: Person.userName
+      grant_type: "client_credentials" //replace it with client_credentials
+      
     })
   })
     .then(response => {
@@ -31,7 +30,7 @@ const fetchFormFields = () => {
   )
     .then(response => {
       if (response.ok) {
-        return response.json().results;
+        return response.json();
       } else {
         throw new Error(
           "Something went wrong, response code is",
