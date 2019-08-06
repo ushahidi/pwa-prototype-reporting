@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { Person } from './Users';
+import { fetchBearerToken, fetchFormFields, postFormData } from './fetchCalls';
 
-const baseUrl=process.env.baseUrl;
+const baseUrl = process.env.baseUrl;
 
 export default class Form extends React.Component {
     constructor() {
@@ -31,43 +32,26 @@ export default class Form extends React.Component {
 
     isTokenValid() {
         let isValid = false;
+
         const currentTime = new Date().getTime();
         const tokenFetchTime = this.state.token.fetching_time;
         const expirationTime = this.state.token.expires_in;
+
         if (currentTime < tokenFetchTime + expirationTime) {
             isValid = true;
         }
+
         return isValid;
     }
 
     getToken() {
         let token = JSON.parse(localStorage.getItem('Bearer Token'));
         if (!token || this.isTokenValid()) {
-            fetch(baseUrl + '/oauth/token', {
-                method: 'POST',
-                body: JSON.stringify({
-                    scope: '*',
-                    client_secret: process.env.client_secret,
-                    client_id: process.env.client_id,
-                    grant_type: process.env.grant_type,
-                    password: Person.password,
-                    username: Person.userName
-                }),
-                
-            })
-                .then(statusCode=> {
-                    if (statusCode.ok) {
-                        return statusCode.json();
-                    } else {
-                        throw new Error('Status Code is not valid.');
-                    }
+            fetchBearerToken().then(data =>
+                this.setState({
+                    token: { ...data, fetching_time: new Date().getTime() }
                 })
-                .then(data =>
-                    this.setState({
-                        token: { ...data, fetching_time: new Date().getTime() }
-                    })
-                )
-                .catch(error => console.log(error));
+            );
         } else {
             this.setState({ token: token });
         }
@@ -77,23 +61,11 @@ export default class Form extends React.Component {
         // Fetch the data form fields from API, use it in state
         let formFields = JSON.parse(localStorage.getItem('Form Fields'));
         if (!(Array.isArray(formFields) && formFields.length)) {
-            fetch(
-                baseUrl +
-                    '/api/v3/forms/14/attributes?order=asc&orderby=priority'
-            )
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Field fetching response is not ok.');
-                    }
+            fetchFormFields().then(data =>
+                this.setState({
+                    formFields: data.results
                 })
-                .then(data =>
-                    this.setState({
-                        formFields: data.results
-                    })
-                )
-                .catch(err => console.log(err));
+            );
         } else {
             this.setState({
                 formFields: formFields
@@ -117,27 +89,7 @@ export default class Form extends React.Component {
     // Handler html For when the submit button is pressed
     onSubmit = e => {
         e.preventDefault();
-
-        // Make a post request to Ushahidi sever
-        fetch(baseUrl + '/api/v3/posts', {
-            method: 'POST',
-            body: JSON.stringify(this.state.formData),
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${this.state.token.access_token}`
-            }
-        })
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                console.log(`Success!!! \n ${data}`);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-
+        postFormData(this.state.formData, this.state.token.access_token);
         this.setState({
             formData: {}
         });
