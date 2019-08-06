@@ -62,8 +62,8 @@ const postFormData = (formData, access_token) => {
     .catch(error => console.log(error));
 };
 
-postFormData = module.exports = {
+module.exports = {
   fetchBearerToken,
   fetchFormFields,
-  postFormData
+  postFormData,
 };
