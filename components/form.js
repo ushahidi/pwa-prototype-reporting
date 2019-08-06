@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import { Person } from './Users';
 import { fetchBearerToken, fetchFormFields, postFormData } from './fetchCalls';
 
 const baseUrl = process.env.baseUrl;
