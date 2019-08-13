@@ -1,6 +1,7 @@
 const { parsed: localEnv } = require('dotenv').config()
 const withOffline = require('next-offline')
 const webpack = require('webpack')
+const withCSS = require('@zeit/next-css')
 const nextConfig = {
   generateInDevMode: true,
   workboxOpts: {
@@ -38,4 +39,4 @@ const nextConfig = {
     return config
   }
 };
-module.exports = withOffline(nextConfig);
+module.exports = withCSS(withOffline(nextConfig));
