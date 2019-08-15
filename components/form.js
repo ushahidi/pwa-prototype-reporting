@@ -72,27 +72,31 @@ export default class Form extends React.Component {
     }
   }
 
+  getFormData() {
+    let formData = JSON.parse(localStorage.getItem("Form Data"));
+    if (!(Array.isArray(formData) && formData.length)) {
+
   componentDidMount() {
     this.getFormFields();
     this.getToken();
+    this.getFormData();
   }
 
   componentDidUpdate(prevProps, prevState) {
     localStorage.setItem("Form Fields", JSON.stringify(this.state.formFields));
     localStorage.setItem("Bearer Token", JSON.stringify(this.state.token));
+    localStorage.setItem("Form Data", JSON.stringify(this.state.formData));
   }
 
-  getFormFields() {
-    let formData = JSON.parse(localStorage.getItem("Form Data"));
-    if (!(Array.isArray(formData) && formData.length)) {
+ 
 
   // Handler html For when the submit button is pressed
   onSubmit = e => {
     e.preventDefault();
-    if (navigator.online) {
+    if (navigator.onLine) {
       postFormData(this.state.formData, this.state.token.access_token);
     } else {
-      localStorage.setItem("Form Fields", JSON.stringify(this.state.formData));
+      localStorage.setItem("Form Data", JSON.stringify(this.state.formData));
     }
 
     this.setState({
