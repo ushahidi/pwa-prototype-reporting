@@ -82,10 +82,19 @@ export default class Form extends React.Component {
     localStorage.setItem("Bearer Token", JSON.stringify(this.state.token));
   }
 
+  getFormFields() {
+    let formData = JSON.parse(localStorage.getItem("Form Data"));
+    if (!(Array.isArray(formData) && formData.length)) {
+
   // Handler html For when the submit button is pressed
   onSubmit = e => {
     e.preventDefault();
-    postFormData(this.state.formData, this.state.token.access_token);
+    if (navigator.online) {
+      postFormData(this.state.formData, this.state.token.access_token);
+    } else {
+      localStorage.setItem("Form Fields", JSON.stringify(this.state.formData));
+    }
+
     this.setState({
       formData: {}
     });
@@ -100,7 +109,8 @@ export default class Form extends React.Component {
             {" "}
             {field.label}{" "}
           </label>
-          <input className = "input"
+          <input
+            className="input"
             type={field.input}
             name={field.label}
             placeholder={`Enter the ${field.label}`}
@@ -114,10 +124,12 @@ export default class Form extends React.Component {
 
   render() {
     return (
-      <form >
+      <form>
         <this.FormInputs fields={this.state.formFields} />
         <div>
-          <button className="button" onClick={e => this.onSubmit(e)}>Submit</button>
+          <button className="button" onClick={e => this.onSubmit(e)}>
+            Submit
+          </button>
         </div>
       </form>
     );
