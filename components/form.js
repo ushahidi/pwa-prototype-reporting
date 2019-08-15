@@ -108,7 +108,7 @@ export default class Form extends React.Component {
       if (!formDataArray) {
         formDataArray = [this.state.formData];
       } else {
-        formDataArray.append(this.state.formData);
+        formDataArray.push(this.state.formData);
       }
       localStorage.setItem(
         "Failed Form Submission Data",
