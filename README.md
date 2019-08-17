@@ -51,7 +51,7 @@ To run the app run the command below in your terminal.
 
 Yes! Development moves pretty quickly but the tech stack is getting more and more stable. If you're keen to help build something awesome, [jump on board](https://www.ushahidi.com/support/get-involved)..
 
-##Contributing to this project:
+## Contributing to this project:
 
 This project is built on Next.js. To learn more about Next.JS refer to [the official documentation of Next](https://nextjs.org/docs). 
 
