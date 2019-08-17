@@ -77,12 +77,12 @@ export default class Form extends React.Component {
     );
     if (!formDataArray) {
       return;
-    } else {
-      formDataArray.map(formData => {
-        postFormData(formData, this.state.token.access_token);
-      });
-      localStorage.removeItem("Failed Form Submission Data");
     }
+
+    formDataArray.map(formData => {
+      postFormData(formData, this.state.token.access_token);
+    });
+    localStorage.removeItem("Failed Form Submission Data");
   };
 
   componentDidMount() {

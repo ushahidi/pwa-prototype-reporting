@@ -50,3 +50,4 @@ To run the app run the command below in your terminal.
 ### I'm a developer, should I contribute to Ushahidi 3.x?
 
 Yes! Development moves pretty quickly but the tech stack is getting more and more stable. If you're keen to help build something awesome, [jump on board](https://www.ushahidi.com/support/get-involved)..
+
