@@ -36,7 +36,7 @@ The app needs to point to the hostname where the backend expects to receive HTTP
 In order to set up all that, create a file at the location /var/www/pwa-prototype-reporting/.env . Use the following contents as an example:
 
 ```
-baseUrl=http://ushahidi-backend
+baseUrl=http://ushahidi-backend.io
 client_secret='35e7f0bca957836d05ca0492211b0ac707671261'
 client_id = 'ushahidiui' 
 form_id= 14
