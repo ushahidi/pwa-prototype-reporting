@@ -6,7 +6,7 @@ This project started as an experimental prototype to migrate the functionality o
 - Saving form responses while offline and syncing the response with the backend when the user is online
 
 # Dynamic attribute loading
-- [Pending] Loads the deployment attributes for any ushahidi v3 form
+- Loads the deployment attributes for any ushahidi v3 form
 
 # Getting set up for development
 
@@ -37,7 +37,7 @@ In order to set up all that, create a file at the location /var/www/pwa-prototyp
 
 ```
 baseUrl=http://ushahidi-backend
-   client_secret='35e7f0bca957836d05ca0492211b0ac707671261'
+client_secret='35e7f0bca957836d05ca0492211b0ac707671261'
 client_id = 'ushahidiui' 
 FormId= 14
 ```
