@@ -26,7 +26,7 @@ const fetchBearerToken = () => {
 
 const fetchFormFields = () => {
   return fetch(
-    baseUrl + "/api/v3/forms/14/attributes?order=asc&orderby=priority"
+    baseUrl + "/api/v3/forms/"+ form_id + "/attributes?order=asc&orderby=priority"
   )
     .then(response => {
       if (response.ok) {
