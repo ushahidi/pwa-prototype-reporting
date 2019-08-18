@@ -1,5 +1,5 @@
 # pwa-prototype-reporting
-A playground for a PWA for reporting only purposes. This project started as an experimental prototype to migrate the functionality of Ushahidi survey submissions into a small standalone project that can be deployed anywhere and in the future could be linked to any ushahidi.io deployment chosen by the user.
+This project started as an experimental prototype to migrate the functionality of Ushahidi survey submissions into a small standalone project that can be deployed anywhere and in the future could be linked to any ushahidi.io deployment chosen by the user.
 
 # Offline support
 - Supports loading the form while offline if you have used the app in the past
@@ -15,7 +15,6 @@ A playground for a PWA for reporting only purposes. This project started as an e
 First you'll need nodejs installed,
 npm takes care of the rest of our dependencies.
 
-* nodejs v6
 
 ### Install, build and run a local dev server
 1. Clone the repo
@@ -37,7 +36,7 @@ The app needs to point to the hostname where the backend expects to receive HTTP
 In order to set up all that, create a file at the location /var/www/pwa-prototype-reporting/.env . Use the following contents as an example:
 
 ```
-BACKEND_URL=http://ushahidi-backend
+baseUrl=http://ushahidi-backend
    client_secret='35e7f0bca957836d05ca0492211b0ac707671261'
 client_id = 'ushahidiui' 
 ```
