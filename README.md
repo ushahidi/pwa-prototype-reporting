@@ -31,6 +31,7 @@ npm takes care of the rest of our dependencies.
     ``` npm install ```
 
 ## Creating a dotenv file
+
 The app needs to point to the hostname where the backend expects to receive HTTP requests. This has to be set before building the client.
 
 In order to set up all that, create a file at the location /var/www/pwa-prototype-reporting/.env . Use the following contents as an example:
