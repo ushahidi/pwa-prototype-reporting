@@ -58,4 +58,5 @@ To run the app run the command below in your terminal.
 4. If you have any suggestions you can open an issue regarding the same.
 
 ## Contact
+
  If you're interested in contributing to this project, reach out to the community [here](https://gitter.im/ushahidi/Community)
