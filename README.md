@@ -47,25 +47,15 @@ To run the app run the command below in your terminal.
 ```npm run dev```
 
 
-### I'm a developer, should I contribute to Ushahidi 3.x?
-
-Yes! Development moves pretty quickly but the tech stack is getting more and more stable. If you're keen to help build something awesome, [jump on board](https://www.ushahidi.com/support/get-involved)..
-
 ## Contributing to this project:
 
-This project is built on Next.js. To learn more about Next.JS refer to [the official documentation of Next](https://nextjs.org/docs). 
+1. This project is built on Next.js. To learn more about Next.JS refer to [the official documentation of Next](https://nextjs.org/docs). 
 
-1. Fork this repository to your own GitHub account and then clone it to your local device.
+2. ```Master``` branch contains all the changes that has been released.
 
-2. Install packages ```npm install```
+3. To contribute you can start working on any of the open issues and submit a pull request on a new branch.
 
-3. Configure the env file.
-
-3. Run ```npm run dev``` to run the app. The app will run on localhost:3000
-
-4. ```Master``` branch contains all the changes that has been released.
-
-4. To contribute you can start working on any of the open issues and submit a pull request on a new branch.
+4. If you have any suggestions you can open an issue regarding the same.
 
 ## Contact
  If you're interested in contributing to this project, reach out to the community [here](https://gitter.im/ushahidi/Community)
