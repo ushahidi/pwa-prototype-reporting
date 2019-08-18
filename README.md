@@ -6,7 +6,7 @@ A playground for a PWA for reporting only purposes. This project started as an e
 - Saving form responses while offline and syncing the response with the backend when the user is online
 
 # Dynamic attribute loading
-- Loads the deployment attributes for any ushahidi v3 form
+- [Pending] Loads the deployment attributes for any ushahidi v3 form
 
 # Getting set up for development
 
