@@ -4,7 +4,6 @@ import { fetchBearerToken, fetchFormFields, postFormData } from "./fetchCalls";
 
 const baseUrl = process.env.baseUrl;
 
-
 export default class Form extends React.Component {
   constructor() {
     super();
@@ -72,19 +71,34 @@ export default class Form extends React.Component {
       });
     }
   }
+
   isOnlineEvent = e => {
     let formDataArray = JSON.parse(
       localStorage.getItem("Failed Form Submission Data")
     );
+
+    failedPosts = [];
+
     if (!formDataArray) {
       return;
-    }
+    } else {
+      formDataArray.map(formData => {
+        postFormData(formData, this.state.token.access_token).then(response => {
+          if (!response.ok) {
+            failedPosts.push(formData);
+          }
+        });
+      });
 
-    formDataArray.map(formData => {
-      postFormData(formData, this.state.token.access_token);
-    });
-    
-    localStorage.removeItem("Failed Form Submission Data");
+      if (failedPosts.length === 0) {
+        localStorage.setItem(
+          "Failed Form Submission Data",
+          JSON.stringify(failedPosts)
+        );
+      } else {
+        localStorage.removeItem("Failed Form Submission Data");
+      }
+    }
   };
 
   componentDidMount() {

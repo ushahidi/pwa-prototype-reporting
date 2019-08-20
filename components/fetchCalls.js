@@ -57,10 +57,7 @@ const postFormData = (formData, access_token) => {
     }
   })
     .then(response => {
-      return response.json();
-    })
-    .then(data => {
-      console.log(`Success!!! \n ${data}`);
+      return response;
     })
     .catch(error => console.log(error));
 };
