@@ -4,6 +4,7 @@ import { fetchBearerToken, fetchFormFields, postFormData } from "./fetchCalls";
 
 const baseUrl = process.env.baseUrl;
 
+
 export default class Form extends React.Component {
   constructor() {
     super();
@@ -82,6 +83,7 @@ export default class Form extends React.Component {
     formDataArray.map(formData => {
       postFormData(formData, this.state.token.access_token);
     });
+    
     localStorage.removeItem("Failed Form Submission Data");
   };
 
