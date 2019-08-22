@@ -46,9 +46,18 @@ const fetchFormFields = () => {
 
 // Make a post request to Ushahidi sever
 const postFormData = (formData, access_token) => {
+  let postData = {
+    title: formData.title,
+    content: formData.description,
+    values: formData.values,
+    form: {
+      id: form_id
+    }
+  };
+  console.log(postData);
   return fetch(baseUrl + "/api/v3/posts", {
     method: "POST",
-    body: JSON.stringify(formData),
+    body: JSON.stringify(postData),
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

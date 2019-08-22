@@ -8,6 +8,7 @@ export default class Form extends React.Component {
   constructor() {
     super();
     this.state = {
+      tempData: {},
       token: {
         accessToken: "",
         expiresIn: 0,
@@ -18,16 +19,6 @@ export default class Form extends React.Component {
       formData: {}
     };
   }
-
-  // Make state targets equal to the value of input fields
-  change = e => {
-    this.setState({
-      formData: {
-        ...this.state.formData,
-        [e.target.name]: e.target.value
-      }
-    });
-  };
 
   isTokenValid() {
     let isValid = false;
@@ -115,15 +106,15 @@ export default class Form extends React.Component {
   // Handler html For when the submit button is pressed
   onSubmit = e => {
     e.preventDefault();
-   let formDataArray= []
+    let formDataArray = [];
     if (navigator.onLine) {
       postFormData(this.state.formData, this.state.token.access_token);
     } else {
       let formDataArray = JSON.parse(
         localStorage.getItem("Failed Form Submission Data")
       );
-      formDataArray.push(this.state.formData)
-      
+      formDataArray.push(this.state.formData);
+
       localStorage.setItem(
         "Failed Form Submission Data",
         JSON.stringify(formDataArray)
@@ -134,21 +125,48 @@ export default class Form extends React.Component {
     });
   };
 
+  // Make state targets equal to the value of input fields
+  change = e => {
+    let data = this.state.tempData;
+    if (e.target.name === "title" || e.target.name === "description") {
+      data = { ...data, [e.target.name]: e.target.value };
+    } else {
+      data = {
+        ...data,
+        values: {
+          ...data.values,
+          [e.target.name]: e.target.value
+        }
+      };
+    }
+    this.state.tempData = data;
+
+    this.setState({
+      formData: {
+        ...this.state.formData,
+        ...data
+      }
+    });
+  };
+
   // Create an array of elements to be rendered in the form
   FormInputs = props => {
     return props.fields.map(field => {
       return (
         <div key={field.key}>
           <label className="background" htmlFor={field.label}>
-            {" "}
-            {field.label}{" "}
+            {field.label}
           </label>
           <input
             className="input"
             type={field.input}
-            name={field.label}
-            placeholder={`Enter the ${field.label}`}
-            value={this.state.formData[field.label]}
+            name={
+              field.type === "title" || field.type === "description"
+                ? field.type
+                : field.key
+            }
+            placeholder={`Enter the ${field.type}`}
+            value={this.state.formData[field.type]}
             onChange={e => this.change(e)}
           />
         </div>
