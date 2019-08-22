@@ -4,7 +4,6 @@ import { fetchBearerToken, fetchFormFields, postFormData } from "./fetchCalls";
 
 const baseUrl = process.env.baseUrl;
 
-
 export default class Form extends React.Component {
   constructor() {
     super();
@@ -101,17 +100,15 @@ export default class Form extends React.Component {
   // Handler html For when the submit button is pressed
   onSubmit = e => {
     e.preventDefault();
+   let formDataArray= []
     if (navigator.onLine) {
       postFormData(this.state.formData, this.state.token.access_token);
     } else {
       let formDataArray = JSON.parse(
         localStorage.getItem("Failed Form Submission Data")
       );
-      if (!formDataArray) {
-        formDataArray = [this.state.formData];
-      } else {
-        formDataArray.push(this.state.formData);
-      }
+      formDataArray.push(this.state.formData)
+      
       localStorage.setItem(
         "Failed Form Submission Data",
         JSON.stringify(formDataArray)
