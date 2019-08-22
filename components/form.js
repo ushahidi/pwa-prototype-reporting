@@ -36,12 +36,16 @@ export default class Form extends React.Component {
 
   getToken() {
     let token = JSON.parse(localStorage.getItem("Bearer Token"));
-    if (!token || this.isTokenValid()) {
-      fetchBearerToken().then(data =>
+    if (!token || !this.isTokenValid()) {
+      fetchBearerToken().then(data => {
+        if (data.error) {
+          // TODO: Add error message for user
+          return;
+        }
         this.setState({
           token: { ...data, fetching_time: new Date().getTime() }
         })
-      );
+      });
     } else {
       this.setState({ token: token });
     }
