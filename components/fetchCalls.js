@@ -1,6 +1,5 @@
 const baseUrl = process.env.baseUrl;
 const form_id = process.env.form_id;
-console.log(form_id);
 
 const fetchBearerToken = () => {
   return fetch(baseUrl + "/oauth/token", {
