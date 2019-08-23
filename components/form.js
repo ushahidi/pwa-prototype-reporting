@@ -1,8 +1,5 @@
 import React from "react";
-import Link from "next/link";
 import { fetchBearerToken, fetchFormFields, postFormData } from "./fetchCalls";
-
-const baseUrl = process.env.baseUrl;
 
 export default class Form extends React.Component {
   constructor() {
@@ -34,37 +31,49 @@ export default class Form extends React.Component {
     return isValid;
   }
 
+
   getToken() {
-    let token = JSON.parse(localStorage.getItem("Bearer Token"));
-    if (!token || !this.isTokenValid()) {
-      fetchBearerToken().then(data => {
-        if (data.error) {
-          // TODO: Add error message for user
-          return;
-        }
-        this.setState({
-          token: { ...data, fetching_time: new Date().getTime() }
-        })
-      });
-    } else {
-      this.setState({ token: token });
-    }
+    return new Promise((resolve, reject) => {
+      let token = JSON.parse(localStorage.getItem("Bearer Token"));
+      if (!token || !this.isTokenValid()) {
+        fetchBearerToken().then(data => {
+          if (!data || data.error) {
+            // TODO: Add error message for user
+            reject(data);
+            return;
+          }
+          this.setState({
+            token: { ...data, fetching_time: new Date().getTime() }
+          })
+          localStorage.setItem("Bearer Token", JSON.stringify(this.state.token));
+          resolve(data);
+        });
+      } else {
+        this.setState({ token: token });
+        resolve(token);
+      }
+    }) 
   }
 
   getFormFields() {
-    // Fetch the data form fields from API, use it in state
-    let formFields = JSON.parse(localStorage.getItem("Form Fields"));
-    if (!(Array.isArray(formFields) && formFields.length)) {
-      fetchFormFields().then(data =>
+    this.getToken().then(response => {
+      // Fetch the data form fields from API, use it in state
+      let formFields = JSON.parse(localStorage.getItem("Form Fields"));
+      if (!(Array.isArray(formFields) && formFields.length)) {
+        fetchFormFields().then(data =>
+          this.setState({
+            formFields: data.results
+          })
+        );
+        localStorage.setItem("Form Fields", JSON.stringify(this.state.formFields));
+      } else {
         this.setState({
-          formFields: data.results
-        })
-      );
-    } else {
-      this.setState({
-        formFields: formFields
-      });
-    }
+          formFields: formFields
+        });
+      }
+    }).catch(err => {
+      console.error("Could not get an access token from localStorage or the server");
+    })
   }
 
   isOnlineEvent = e => {
@@ -72,38 +81,34 @@ export default class Form extends React.Component {
       localStorage.getItem("Failed Form Submission Data")
     );
 
-    failedPosts = [];
-
+    let failedPosts = [];
     if (!formDataArray) {
-      return;
-    } else {
-      formDataArray.map(formData => {
-        postFormData(formData, this.state.token.access_token).then(response => {
-          if (!response.ok) {
-            failedPosts.push(formData);
-          }
-        });
+      formDataArray = [];
+    }
+    
+    formDataArray.map(formData => {
+      postFormData(formData, this.state.token.access_token).then(response => {
+        if (!response.ok) {
+          failedPosts.push(formData);
+        }
       });
+    });
 
-      if (failedPosts.length === 0) {
-        localStorage.setItem(
-          "Failed Form Submission Data",
-          JSON.stringify(failedPosts)
-        );
-      } else {
-        localStorage.removeItem("Failed Form Submission Data");
-      }
+    if (failedPosts.length === 0) {
+      localStorage.setItem(
+        "Failed Form Submission Data",
+        JSON.stringify(failedPosts)
+      );
+    } else {
+      localStorage.removeItem("Failed Form Submission Data");
     }
   };
 
   componentDidMount() {
     this.getFormFields();
-    this.getToken();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    localStorage.setItem("Form Fields", JSON.stringify(this.state.formFields));
-    localStorage.setItem("Bearer Token", JSON.stringify(this.state.token));
     window.addEventListener("online", this.isOnlineEvent);
   }
 
@@ -114,11 +119,13 @@ export default class Form extends React.Component {
     if (navigator.onLine) {
       postFormData(this.state.formData, this.state.token.access_token);
     } else {
-      let formDataArray = JSON.parse(
+      formDataArray = JSON.parse(
         localStorage.getItem("Failed Form Submission Data")
       );
+      if (!formDataArray) {
+        formDataArray = [];
+      }
       formDataArray.push(this.state.formData);
-
       localStorage.setItem(
         "Failed Form Submission Data",
         JSON.stringify(formDataArray)
@@ -170,7 +177,6 @@ export default class Form extends React.Component {
                 : field.key
             }
             placeholder={`Enter the ${field.type}`}
-            value={this.state.formData[field.type]}
             onChange={e => this.change(e)}
           />
         </div>
