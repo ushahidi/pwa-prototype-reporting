@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { fetchBearerToken, fetchFormFields, postFormData } from "./fetchCalls";
 
-const baseUrl = process.env.baseUrl;
+const base_url = process.env.baseUrl;
 
 export default class Form extends React.Component {
   constructor() {
@@ -35,23 +35,32 @@ export default class Form extends React.Component {
   }
 
   getToken() {
+    return new Promise((resolve, reject) => {
     let token = JSON.parse(localStorage.getItem("Bearer Token"));
     if (!token || !this.isTokenValid()) {
       fetchBearerToken().then(data => {
         if (data.error) {
-          // TODO: Add error message for user
+          "Error while getting the data "
+          reject(data);
           return;
+        
         }
         this.setState({
           token: { ...data, fetching_time: new Date().getTime() }
         })
+        localStorage.setItem("Bearer Token", JSON.stringify(this.state.token));
+        resolve(data);
       });
+      
     } else {
       this.setState({ token: token });
+      resolve(token);
     }
-  }
+  })
+}
 
   getFormFields() {
+    this.getToken().then(response => {
     // Fetch the data form fields from API, use it in state
     let formFields = JSON.parse(localStorage.getItem("Form Fields"));
     if (!(Array.isArray(formFields) && formFields.length)) {
@@ -60,12 +69,16 @@ export default class Form extends React.Component {
           formFields: data.results
         })
       );
+      localStorage.setItem("Form Fields", JSON.stringify(this.state.formFields));
     } else {
       this.setState({
         formFields: formFields
       });
     }
-  }
+  }).catch(err => {
+    console.error("Could not get an access token from localStorage or the server");
+  })
+}
 
   isOnlineEvent = e => {
     let formDataArray = JSON.parse(
@@ -114,7 +127,7 @@ export default class Form extends React.Component {
     if (navigator.onLine) {
       postFormData(this.state.formData, this.state.token.access_token);
     } else {
-      let formDataArray = JSON.parse(
+      formDataArray = JSON.parse(
         localStorage.getItem("Failed Form Submission Data")
       );
       formDataArray.push(this.state.formData);
@@ -130,7 +143,7 @@ export default class Form extends React.Component {
   };
 
   // Make state targets equal to the value of input fields
-  change = e => {
+  onSubmit = e => {
     let data = this.state.tempData;
     if (e.target.name === "title" || e.target.name === "description") {
       data = { ...data, [e.target.name]: e.target.value };
@@ -170,7 +183,6 @@ export default class Form extends React.Component {
                 : field.key
             }
             placeholder={`Enter the ${field.type}`}
-            value={this.state.formData[field.type]}
             onChange={e => this.change(e)}
           />
         </div>

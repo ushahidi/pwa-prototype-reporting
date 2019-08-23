@@ -33,13 +33,13 @@ npm takes care of the rest of our dependencies.
 
 The app needs to point to the hostname where the backend expects to receive HTTP requests. This has to be set before building the client.
 
-In order to set up all that, create a file at the location /var/www/pwa-prototype-reporting/.env . Use the following contents as an example:
+In order to set up all that, Create a new file named ".env" and copy the contents of env.example into it. The .env file has to be placed in the application's root directory (at the same level as dotenv example).
 
 ```
-baseUrl=http://ushahidi-backend.io
+base_url= https://pwa-prototype.api.ushahidi.io/
 client_secret='35e7f0bca957836d05ca0492211b0ac707671261'
 client_id = 'ushahidiui' 
-form_id= 14
+form_id= 1
 ```
 ## How to run this?
 
@@ -52,7 +52,7 @@ To run the app run the command below in your terminal.
 
 1. This project is built on Next.js. To learn more about Next.JS refer to [the official documentation of Next](https://nextjs.org/docs). 
 
-2. ```Master``` branch contains all the changes that has been released.
+2. ```master``` branch contains all the changes that has been released.
 
 3. To contribute you can start working on any of the open issues and submit a pull request on a new branch.
 

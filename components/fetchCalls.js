@@ -1,4 +1,4 @@
-const baseUrl = process.env.baseUrl;
+const base_url = process.env.baseUrl;
 const form_id = process.env.form_id;
 const scopes = [
   'posts',
@@ -28,11 +28,11 @@ const fetchBearerToken = () => {
     client_id: process.env.client_id,
     grant_type: "client_credentials"
   };
-  return fetch(baseUrl + "/oauth/token", {
+  return fetch(base_url + "/oauth/token", {
     method: "POST",
     body: JSON.stringify(tokenRequest),
     headers: {
-      Accept: "application/json",
+      "Accept": "application/json",
       "Content-Type": "application/json"
     }
   })
@@ -44,7 +44,7 @@ const fetchBearerToken = () => {
 
 const fetchFormFields = () => {
   return fetch(
-    baseUrl +
+    base_url +
       "/api/v3/forms/" +
       form_id +
       "/attributes?order=asc&orderby=priority"
@@ -64,14 +64,14 @@ const postFormData = (formData, access_token) => {
       id: form_id
     }
   };
-  console.log(postData);
-  return fetch(baseUrl + "/api/v3/posts", {
+  
+  return fetch(base_url + "/api/v3/posts", {
     method: "POST",
     body: JSON.stringify(postData),
     headers: {
-      Accept: "application/json",
+      "Accept": "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${access_token}`
+      "Authorization": `Bearer ${access_token}`
     }
   })
     .then(response => {
