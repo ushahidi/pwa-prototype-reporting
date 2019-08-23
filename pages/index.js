@@ -1,10 +1,12 @@
 import React from "react";
 import Form from "../components/form";
+import Head from "../components/head";
 import "./index.css";
-
-const Home = () => (
+const Index = () => (
   <div>
+
+      <Head />
     <Form />
   </div>
 );
-export default Home;
+export default Index;
