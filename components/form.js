@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { fetchBearerToken, fetchFormFields, postFormData } from "./fetchCalls";
 
 const base_url = process.env.baseUrl;
@@ -33,6 +32,7 @@ export default class Form extends React.Component {
 
     return isValid;
   }
+
 
   getToken() {
     return new Promise((resolve, reject) => {
@@ -85,38 +85,34 @@ export default class Form extends React.Component {
       localStorage.getItem("Failed Form Submission Data")
     );
 
-    failedPosts = [];
-
+    let failedPosts = [];
     if (!formDataArray) {
-      return;
-    } else {
-      formDataArray.map(formData => {
-        postFormData(formData, this.state.token.access_token).then(response => {
-          if (!response.ok) {
-            failedPosts.push(formData);
-          }
-        });
+      formDataArray = [];
+    }
+    
+    formDataArray.map(formData => {
+      postFormData(formData, this.state.token.access_token).then(response => {
+        if (!response.ok) {
+          failedPosts.push(formData);
+        }
       });
+    });
 
-      if (failedPosts.length === 0) {
-        localStorage.setItem(
-          "Failed Form Submission Data",
-          JSON.stringify(failedPosts)
-        );
-      } else {
-        localStorage.removeItem("Failed Form Submission Data");
-      }
+    if (failedPosts.length === 0) {
+      localStorage.setItem(
+        "Failed Form Submission Data",
+        JSON.stringify(failedPosts)
+      );
+    } else {
+      localStorage.removeItem("Failed Form Submission Data");
     }
   };
 
   componentDidMount() {
     this.getFormFields();
-    this.getToken();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    localStorage.setItem("Form Fields", JSON.stringify(this.state.formFields));
-    localStorage.setItem("Bearer Token", JSON.stringify(this.state.token));
     window.addEventListener("online", this.isOnlineEvent);
   }
 
@@ -130,8 +126,10 @@ export default class Form extends React.Component {
       formDataArray = JSON.parse(
         localStorage.getItem("Failed Form Submission Data")
       );
+      if (!formDataArray) {
+        formDataArray = [];
+      }
       formDataArray.push(this.state.formData);
-
       localStorage.setItem(
         "Failed Form Submission Data",
         JSON.stringify(formDataArray)
