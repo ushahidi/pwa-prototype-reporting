@@ -43,7 +43,7 @@ export default class Form extends React.Component {
         return;
       }
 
-      if (!token || !this.isTokenValid()) {
+      if (!token || !this.isTokenValid(token)) {
         fetchBearerToken().then(data => {
           if (!data || data.error) {
             this.setState({
