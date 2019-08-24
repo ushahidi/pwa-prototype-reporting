@@ -1,7 +1,7 @@
 import React from "react";
 import { fetchBearerToken, fetchFormFields, postFormData } from "./fetchCalls";
 
-const base_url = process.env.baseUrl;
+const base_url = process.env.base_url;
 
 export default class Form extends React.Component {
   constructor() {
@@ -39,7 +39,7 @@ export default class Form extends React.Component {
     let token = JSON.parse(localStorage.getItem("Bearer Token"));
     if (!token || !this.isTokenValid()) {
       fetchBearerToken().then(data => {
-        if (data.error) {
+        if (!data || data.error) {
           "Error while getting the data "
           reject(data);
           return;
@@ -141,7 +141,7 @@ export default class Form extends React.Component {
   };
 
   // Make state targets equal to the value of input fields
-  onSubmit = e => {
+  change = e => {
     let data = this.state.tempData;
     if (e.target.name === "title" || e.target.name === "description") {
       data = { ...data, [e.target.name]: e.target.value };
@@ -181,6 +181,7 @@ export default class Form extends React.Component {
                 : field.key
             }
             placeholder={`Enter the ${field.type}`}
+            /* value={this.state.formData[field.type]} */
             onChange={e => this.change(e)}
           />
         </div>

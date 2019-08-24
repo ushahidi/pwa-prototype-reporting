@@ -1,4 +1,4 @@
-const base_url = process.env.baseUrl;
+const base_url = process.env.base_url;
 const form_id = process.env.form_id;
 const scopes = [
   'posts',
