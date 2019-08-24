@@ -142,27 +142,14 @@ export default class Form extends React.Component {
 
   // Make state targets equal to the value of input fields
   change = e => {
-    let data = this.state.tempData;
-    if (e.target.name === "title" || e.target.name === "description") {
-      data = { ...data, [e.target.name]: e.target.value };
-    } else {
-      data = {
-        ...data,
-        values: {
-          ...data.values,
-          [e.target.name]: e.target.value
-        }
-      };
-    }
-    this.state.tempData = data;
-
     this.setState({
       formData: {
-        ...this.state.formData,
-        ...data
+          ...this.state.formData,
+          [e.target.name]: e.target.value
       }
-    });
-  };
+  });
+};
+  
 
   // Create an array of elements to be rendered in the form
   FormInputs = props => {

@@ -44,18 +44,17 @@ const fetchBearerToken = () => {
 
 const fetchFormFields = () => {
   return fetch(
-    base_url +
-      "/api/v3/forms/" +
-      form_id +
-      "/attributes?order=asc&orderby=priority"
-  ).then(response => {
-    return response.json();
-  })
-  .catch(err => console.error(err));
+    `${base_url}/api/v3/forms/${form_id}/attributes?order=asc&orderby=priority`
+)
+    .then(response => {
+        return response.json();
+    })
+    .catch(err => console.error(err));
 };
 
 // Make a post request to Ushahidi sever
 const postFormData = (formData, access_token) => {
+  let { title, description, ...values } = formData;
   let postData = {
     title: formData.title,
     content: formData.description,
