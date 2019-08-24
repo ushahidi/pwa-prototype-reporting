@@ -1,6 +1,5 @@
 body {
     background-color: #FAFAFA;
-    
 }
 
 .input{
@@ -16,18 +15,9 @@ body {
 
 .button{
     color: #373E46;
-            border-radius: 4px;
-            font-size: 110%;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-            background: #FFC334;
+    border-radius: 4px;
+    font-size: 110%;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: #FFC334;
 }
 
-.alert{
-    color: #373E46;
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: content-box;
-    resize: vertical;
-}

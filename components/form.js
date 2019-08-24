@@ -19,12 +19,11 @@ export default class Form extends React.Component {
     };
   }
 
-  isTokenValid() {
+  isTokenValid(token) {
     let isValid = false;
-
     const currentTime = new Date().getTime();
-    const tokenFetchTime = this.state.token.fetching_time;
-    const expirationTime = this.state.token.expires_in;
+    const tokenFetchTime = token.fetching_time;
+    const expirationTime = token.expires_in;
 
     if (currentTime < tokenFetchTime + expirationTime) {
       isValid = true;
@@ -36,13 +35,20 @@ export default class Form extends React.Component {
   getToken() {
     return new Promise((resolve, reject) => {
       let token = JSON.parse(localStorage.getItem("Bearer Token"));
+      // if offline and there is *any* token, we return OK
+      // this is because the offline mode won't do authentication for fetch
+      // so it only cares that there is *some* token.
+      if (!navigator.onLine && token) {
+        resolve(token);
+        return;
+      }
+
       if (!token || !this.isTokenValid()) {
         fetchBearerToken().then(data => {
           if (!data || data.error) {
             this.setState({
               showError: true
             });
-
             reject(data);
             return;
           }
@@ -230,12 +236,10 @@ export default class Form extends React.Component {
 
     return (
       <div>
-        <form id="ushahidi-form">
+        <form onSubmit={(e)=> this.onSubmit(e) } >
           <this.FormInputs fields={this.state.formFields} />
           <div>
-            <button className="button" onClick={e => this.onSubmit(e)}>
-              Submit
-            </button>
+            <input type="submit" className="button" value="Submit"/>
           </div>
         </form>
 
