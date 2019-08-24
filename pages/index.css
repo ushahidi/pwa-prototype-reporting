@@ -1,10 +1,10 @@
 body {
-    background-color: rgb(180, 225, 243);
+    background-color: #FAFAFA;
     
 }
 
 .input{
-    color: rgb(4, 4, 14);
+    color: #373E46;
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -15,9 +15,19 @@ body {
 
 
 .button{
-    color: white;
+    color: #373E46;
             border-radius: 4px;
             font-size: 110%;
             text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-            background: rgb(28, 184, 65);
+            background: #FFC334;
+}
+
+.alert{
+    color: #373E46;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: content-box;
+    resize: vertical;
 }

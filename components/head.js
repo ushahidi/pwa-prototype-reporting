@@ -1,10 +1,9 @@
 import React from 'react'
 import NextHead from 'next/head'
 import { string } from 'prop-types'
-
-const defaultDescription = ''
+const defaultDescription = 'A standalone report submission tool for Ushahidi deployments.'
 const defaultOGURL = ''
-const defaultOGImage = ''
+const defaultOGImage = 'https://www.ushahidi.com//uploads/about-images/ushahidi-stamp.png'
 
 const Head = props => (
   <NextHead>

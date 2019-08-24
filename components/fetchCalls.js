@@ -1,62 +1,80 @@
-const baseUrl = process.env.baseUrl;
-
+const base_url = process.env.base_url;
+const form_id = process.env.form_id;
+const scopes = [
+  'posts',
+  'country_codes',
+  'media',
+  'forms',
+  'api',
+  'tags',
+  'savedsearches',
+  'sets',
+  'users',
+  'stats',
+  'layers',
+  'config',
+  'messages',
+  'notifications',
+  'webhooks',
+  'contacts',
+  'roles',
+  'permissions',
+  'csv'
+].join(" ");
 const fetchBearerToken = () => {
-  return fetch(baseUrl + "/oauth/token", {
+  const tokenRequest = {
+    scope: scopes,
+    client_secret: process.env.client_secret,
+    client_id: process.env.client_id,
+    grant_type: "client_credentials"
+  };
+  return fetch(base_url + "/oauth/token", {
     method: "POST",
-    body: JSON.stringify({
-      scope: "*",
-      client_secret: process.env.client_secret,
-      client_id: process.env.client_id,
-      grant_type: "client_credentials" //replace it with client_credentials
-      
-    })
+    body: JSON.stringify(tokenRequest),
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    }
   })
     .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error(
-          "Something went wrong, response code is",
-          response.status
-        );
-      }
+      return response.json();
     })
     .catch(err => console.error(err));
 };
 
 const fetchFormFields = () => {
   return fetch(
-    baseUrl + "/api/v3/forms/14/attributes?order=asc&orderby=priority"
-  )
+    `${base_url}/api/v3/forms/${form_id}/attributes?order=asc&orderby=priority`
+)
     .then(response => {
-      if (response.ok) {
         return response.json();
-      } else {
-        throw new Error(
-          "Something went wrong, response code is",
-          response.status
-        );
-      }
     })
     .catch(err => console.error(err));
 };
 
 // Make a post request to Ushahidi sever
 const postFormData = (formData, access_token) => {
-  return fetch(baseUrl + "/api/v3/posts", {
+  let { title, description, ...values } = formData;
+  let postData = {
+    title: formData.title,
+    content: formData.description,
+    values: formData.values,
+    form: {
+      id: form_id
+    }
+  };
+  
+  return fetch(base_url + "/api/v3/posts", {
     method: "POST",
-    body: JSON.stringify(formData),
+    body: JSON.stringify(postData),
     headers: {
-      Accept: "application/json",
+      "Accept": "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${access_token}`
+      "Authorization": `Bearer ${access_token}`
     }
   })
     .then(response => {
-      return response.json();
-    })
-    .then(data => {
-      console.log(`Success!!! \n ${data}`);
+      return response;
     })
     .catch(error => console.log(error));
 };
@@ -64,5 +82,5 @@ const postFormData = (formData, access_token) => {
 module.exports = {
   fetchBearerToken,
   fetchFormFields,
-  postFormData,
+  postFormData
 };
