@@ -68,6 +68,7 @@ If you want to deploy this application to Zeit, you can
 
 ### Pending: add other deployment instructions
 Heroku, Netlify etc.
+
 ## Contact
 
  If you're interested in contributing to this project, reach out to the community [here](https://gitter.im/ushahidi/Community)
