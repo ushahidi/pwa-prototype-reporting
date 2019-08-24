@@ -75,7 +75,8 @@ export default class Form extends React.Component {
       if (!formFields) {
         formFields = [];
       }
-      if (formFields.length === 0) {
+      // If we don't have any form fields we try to get them from the API. 
+      if (!(Array.isArray(formFields) && formFields.length)) {
         fetchFormFields().then(data => {
           this.setState({
             formFields: data.results
@@ -90,7 +91,10 @@ export default class Form extends React.Component {
           formFields: formFields
         });
       }
-    });
+    }).catch(err => {
+      // TODO: add some UI indicator that there is an issue? 
+      console.error("Could not get an access token from localStorage or the server");
+    })
   }
 
   isOnlineEvent = e => {
