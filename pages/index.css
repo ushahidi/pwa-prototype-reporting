@@ -22,3 +22,12 @@ body {
             background: #FFC334;
 }
 
+.alert{
+    color: #373E46;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: content-box;
+    resize: vertical;
+}

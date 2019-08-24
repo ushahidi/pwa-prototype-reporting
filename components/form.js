@@ -176,7 +176,7 @@ export default class Form extends React.Component {
   render() {
     const FormEmptyAlert = props => {
       return props.isEmpty ? (
-        <div>The form is empty, please fill before you submit.</div>
+        <div> The form is empty, please fill before you submit.</div>
       ) : null;
     };
     const ErrorOccurredAlert = props => {
@@ -186,6 +186,13 @@ export default class Form extends React.Component {
     // Create an array of elements to be rendered in the form
     const FormInputs = props => {
       return props.fields.map(field => {
+        const getInputName = () => {
+          return field.type === 'title' ||
+              field.type === 'description'
+              ? field.type
+              : field.key;
+      };
+
         return (
           <div key={field.key}>
             <label className="background" htmlFor={field.label}>
@@ -201,6 +208,7 @@ export default class Form extends React.Component {
               }
               placeholder={`Enter the ${field.type}`}
               onChange={e => this.change(e)}
+              value={this.state.formData[getInputName()]} //value is kept equal to this because once we reset the formData value also get resets
             />
           </div>
         );
