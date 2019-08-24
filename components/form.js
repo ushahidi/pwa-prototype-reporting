@@ -7,6 +7,7 @@ export default class Form extends React.Component {
     this.state = {
       isFormEmpty: null,
       showError: false,
+      dataPosted: false,
       token: {
         accessToken: "",
         expiresIn: 0,
@@ -101,6 +102,10 @@ export default class Form extends React.Component {
       postFormData(formData, this.state.token.access_token).then(response => {
         if (response && !response.ok) {
           failedPosts.push(formData);
+        } else {
+          this.setState({
+            dataPosted: true
+          });
         }
       });
     });
@@ -137,9 +142,19 @@ export default class Form extends React.Component {
       return;
     }
 
+    this.setState({
+      isFormEmpty: false
+    });
+
     let formDataArray = [];
     if (navigator.onLine) {
-      postFormData(this.state.formData, this.state.token.access_token);
+      postFormData(this.state.formData, this.state.token.access_token).then(
+        res => {
+          this.setState({
+            dataPosted: true
+          });
+        }
+      );
     } else {
       formDataArray = JSON.parse(
         localStorage.getItem("Failed Form Submission Data")
@@ -157,7 +172,6 @@ export default class Form extends React.Component {
       );
     }
 
-    document.getElementById("ushahidi-form").reset();
     this.setState({
       formData: {}
     });
@@ -173,52 +187,51 @@ export default class Form extends React.Component {
     });
   };
 
+  // Create an array of elements to be rendered in the form
+  FormInputs = props => {
+    return props.fields.map(field => {
+      const getInputName = () => {
+        return field.type === "title" || field.type === "description"
+          ? field.type
+          : field.key;
+      };
+
+      return (
+        <div key={field.key}>
+          <label className="background" htmlFor={field.label}>
+            {field.label}
+          </label>
+          <input
+            className="input"
+            type={field.input}
+            name={getInputName()}
+            placeholder={`Enter the ${field.type}`}
+            onChange={e => this.change(e)}
+            value={this.state.formData[getInputName()]}
+          />
+        </div>
+      );
+    });
+  };
+
   render() {
     const FormEmptyAlert = props => {
       return props.isEmpty ? (
-        <div> The form is empty, please fill before you submit.</div>
+        <div>The form is empty, please fill before you submit.</div>
       ) : null;
     };
     const ErrorOccurredAlert = props => {
       return props.showError ? <div>An unexpected error occurred.</div> : null;
     };
 
-    // Create an array of elements to be rendered in the form
-    const FormInputs = props => {
-      return props.fields.map(field => {
-        const getInputName = () => {
-          return field.type === 'title' ||
-              field.type === 'description'
-              ? field.type
-              : field.key;
-      };
-
-        return (
-          <div key={field.key}>
-            <label className="background" htmlFor={field.label}>
-              {field.label}
-            </label>
-            <input
-              className="input"
-              type={field.input}
-              name={
-                field.type === "title" || field.type === "description"
-                  ? field.type
-                  : field.key
-              }
-              placeholder={`Enter the ${field.type}`}
-              onChange={e => this.change(e)}
-              value={this.state.formData[getInputName()]} //value is kept equal to this because once we reset the formData value also get resets
-            />
-          </div>
-        );
-      });
+    const DataPostedSuccess = props => {
+      return props.posted ? <div>Data was posted successfully.</div> : null;
     };
 
     return (
       <div>
         <form id="ushahidi-form">
-          <FormInputs fields={this.state.formFields} />
+          <this.FormInputs fields={this.state.formFields} />
           <div>
             <button className="button" onClick={e => this.onSubmit(e)}>
               Submit
@@ -228,6 +241,7 @@ export default class Form extends React.Component {
 
         <FormEmptyAlert isEmpty={this.state.isFormEmpty} />
         <ErrorOccurredAlert showError={this.state.showError} />
+        <DataPostedSuccess posted={this.state.dataPosted} />
       </div>
     );
   }
