@@ -1,13 +1,10 @@
 import React from "react";
 import { fetchBearerToken, fetchFormFields, postFormData } from "./fetchCalls";
 
-const base_url = process.env.base_url;
-
 export default class Form extends React.Component {
   constructor() {
     super();
     this.state = {
-      tempData: {},
       token: {
         accessToken: "",
         expiresIn: 0,
@@ -33,72 +30,77 @@ export default class Form extends React.Component {
     return isValid;
   }
 
-
   getToken() {
     return new Promise((resolve, reject) => {
-    let token = JSON.parse(localStorage.getItem("Bearer Token"));
-    if (!token || !this.isTokenValid()) {
-      fetchBearerToken().then(data => {
-        if (!data || data.error) {
-          "Error while getting the data "
-          reject(data);
-          return;
-        
-        }
-        this.setState({
-          token: { ...data, fetching_time: new Date().getTime() }
-        })
-        localStorage.setItem("Bearer Token", JSON.stringify(this.state.token));
-        resolve(data);
-      });
-      
-    } else {
-      this.setState({ token: token });
-      resolve(token);
-    }
-  })
-}
+      let token = JSON.parse(localStorage.getItem("Bearer Token"));
+      if (!token || !this.isTokenValid()) {
+        fetchBearerToken().then(data => {
+          if (!data || data.error) {
+            ("Error while getting the data ");
+            reject(data);
+            return;
+          }
+          this.setState({
+            token: { ...data, fetching_time: new Date().getTime() }
+          });
+          localStorage.setItem(
+            "Bearer Token",
+            JSON.stringify(this.state.token)
+          );
+          resolve(data);
+        });
+      } else {
+        this.setState({ token: token });
+        resolve(token);
+      }
+    });
+  }
 
   getFormFields() {
-    this.getToken().then(response => {
-    // Fetch the data form fields from API, use it in state
-    let formFields = JSON.parse(localStorage.getItem("Form Fields"));
-    if (!(Array.isArray(formFields) && formFields.length)) {
-      fetchFormFields().then(data =>
+    this.getToken().then(res => {
+      // Fetch the data form fields from API, use it in state
+      let formFields = JSON.parse(localStorage.getItem("Form Fields"));
+      if (!formFields) {
+        formFields = [];
+      }
+      if (formFields.length === 0) {
+        fetchFormFields().then(data => {
+          this.setState({
+            formFields: data.results
+          });
+          localStorage.setItem(
+            "Form Fields",
+            JSON.stringify(this.state.formFields)
+          );
+        });
+      } else {
         this.setState({
-          formFields: data.results
-        })
-      );
-      localStorage.setItem("Form Fields", JSON.stringify(this.state.formFields));
-    } else {
-      this.setState({
-        formFields: formFields
-      });
-    }
-  }).catch(err => {
-    console.error("Could not get an access token from localStorage or the server");
-  })
-}
+          formFields: formFields
+        });
+      }
+    });
+  }
 
   isOnlineEvent = e => {
+    let failedPosts = [];
+
     let formDataArray = JSON.parse(
       localStorage.getItem("Failed Form Submission Data")
     );
 
-    let failedPosts = [];
     if (!formDataArray) {
       formDataArray = [];
     }
-    
+
     formDataArray.map(formData => {
       postFormData(formData, this.state.token.access_token).then(response => {
-        if (!response.ok) {
+        if (response && !response.ok) {
           failedPosts.push(formData);
         }
       });
     });
 
-    if (failedPosts.length === 0) {
+    if (failedPosts.length !== 0) {
       localStorage.setItem(
         "Failed Form Submission Data",
         JSON.stringify(failedPosts)
@@ -116,9 +118,17 @@ export default class Form extends React.Component {
     window.addEventListener("online", this.isOnlineEvent);
   }
 
+  isObjEmpty(obj) {
+    return Object.entries(obj).length === 0 && obj.constructor === Object;
+  }
+
   // Handler html For when the submit button is pressed
   onSubmit = e => {
     e.preventDefault();
+    if (this.isObjEmpty(this.state.formData)) {
+      return;
+    }
+
     let formDataArray = [];
     if (navigator.onLine) {
       postFormData(this.state.formData, this.state.token.access_token);
@@ -126,15 +136,19 @@ export default class Form extends React.Component {
       formDataArray = JSON.parse(
         localStorage.getItem("Failed Form Submission Data")
       );
+
       if (!formDataArray) {
         formDataArray = [];
       }
+
       formDataArray.push(this.state.formData);
+
       localStorage.setItem(
         "Failed Form Submission Data",
         JSON.stringify(formDataArray)
       );
     }
+    document.getElementById("ushahidi-form").reset();
     this.setState({
       formData: {}
     });
@@ -144,12 +158,11 @@ export default class Form extends React.Component {
   change = e => {
     this.setState({
       formData: {
-          ...this.state.formData,
-          [e.target.name]: e.target.value
+        ...this.state.formData,
+        [e.target.name]: e.target.value
       }
-  });
-};
-  
+    });
+  };
 
   // Create an array of elements to be rendered in the form
   FormInputs = props => {
@@ -168,7 +181,6 @@ export default class Form extends React.Component {
                 : field.key
             }
             placeholder={`Enter the ${field.type}`}
-            /* value={this.state.formData[field.type]} */
             onChange={e => this.change(e)}
           />
         </div>
@@ -178,7 +190,7 @@ export default class Form extends React.Component {
 
   render() {
     return (
-      <form>
+      <form id="ushahidi-form">
         <this.FormInputs fields={this.state.formFields} />
         <div>
           <button className="button" onClick={e => this.onSubmit(e)}>
