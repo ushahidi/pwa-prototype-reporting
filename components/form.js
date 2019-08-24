@@ -5,6 +5,8 @@ export default class Form extends React.Component {
   constructor() {
     super();
     this.state = {
+      isFormEmpty: null,
+      showError: false,
       token: {
         accessToken: "",
         expiresIn: 0,
@@ -39,6 +41,7 @@ export default class Form extends React.Component {
             this.setState({
               showError: true
             });
+
             reject(data);
             return;
           }
@@ -153,6 +156,7 @@ export default class Form extends React.Component {
         JSON.stringify(formDataArray)
       );
     }
+
     document.getElementById("ushahidi-form").reset();
     this.setState({
       formData: {}
@@ -168,6 +172,7 @@ export default class Form extends React.Component {
       }
     });
   };
+
   render() {
     const FormEmptyAlert = props => {
       return props.isEmpty ? (
@@ -179,7 +184,7 @@ export default class Form extends React.Component {
     };
 
     // Create an array of elements to be rendered in the form
-    FormInputs = props => {
+    const FormInputs = props => {
       return props.fields.map(field => {
         return (
           <div key={field.key}>
@@ -205,13 +210,14 @@ export default class Form extends React.Component {
     return (
       <div>
         <form id="ushahidi-form">
-          <this.FormInputs fields={this.state.formFields} />
+          <FormInputs fields={this.state.formFields} />
           <div>
             <button className="button" onClick={e => this.onSubmit(e)}>
               Submit
             </button>
           </div>
         </form>
+
         <FormEmptyAlert isEmpty={this.state.isFormEmpty} />
         <ErrorOccurredAlert showError={this.state.showError} />
       </div>
