@@ -36,7 +36,9 @@ export default class Form extends React.Component {
       if (!token || !this.isTokenValid()) {
         fetchBearerToken().then(data => {
           if (!data || data.error) {
-            ("Error while getting the data ");
+            this.setState({
+              showError: true
+            });
             reject(data);
             return;
           }
@@ -126,6 +128,9 @@ export default class Form extends React.Component {
   onSubmit = e => {
     e.preventDefault();
     if (this.isObjEmpty(this.state.formData)) {
+      this.setState({
+        isFormEmpty: true
+      });
       return;
     }
 
@@ -163,41 +168,53 @@ export default class Form extends React.Component {
       }
     });
   };
-
-  // Create an array of elements to be rendered in the form
-  FormInputs = props => {
-    return props.fields.map(field => {
-      return (
-        <div key={field.key}>
-          <label className="background" htmlFor={field.label}>
-            {field.label}
-          </label>
-          <input
-            className="input"
-            type={field.input}
-            name={
-              field.type === "title" || field.type === "description"
-                ? field.type
-                : field.key
-            }
-            placeholder={`Enter the ${field.type}`}
-            onChange={e => this.change(e)}
-          />
-        </div>
-      );
-    });
-  };
-
   render() {
+    const FormEmptyAlert = props => {
+      return props.isEmpty ? (
+        <div>The form is empty, please fill before you submit.</div>
+      ) : null;
+    };
+    const ErrorOccurredAlert = props => {
+      return props.showError ? <div>An unexpected error occurred.</div> : null;
+    };
+
+    // Create an array of elements to be rendered in the form
+    FormInputs = props => {
+      return props.fields.map(field => {
+        return (
+          <div key={field.key}>
+            <label className="background" htmlFor={field.label}>
+              {field.label}
+            </label>
+            <input
+              className="input"
+              type={field.input}
+              name={
+                field.type === "title" || field.type === "description"
+                  ? field.type
+                  : field.key
+              }
+              placeholder={`Enter the ${field.type}`}
+              onChange={e => this.change(e)}
+            />
+          </div>
+        );
+      });
+    };
+
     return (
-      <form id="ushahidi-form">
-        <this.FormInputs fields={this.state.formFields} />
-        <div>
-          <button className="button" onClick={e => this.onSubmit(e)}>
-            Submit
-          </button>
-        </div>
-      </form>
+      <div>
+        <form id="ushahidi-form">
+          <this.FormInputs fields={this.state.formFields} />
+          <div>
+            <button className="button" onClick={e => this.onSubmit(e)}>
+              Submit
+            </button>
+          </div>
+        </form>
+        <FormEmptyAlert isEmpty={this.state.isFormEmpty} />
+        <ErrorOccurredAlert showError={this.state.showError} />
+      </div>
     );
   }
 }
