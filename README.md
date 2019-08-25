@@ -25,27 +25,28 @@ npm takes care of the rest of our dependencies.
 
     ```cd pwa-prototype-reporting```
 
-4. Install Packages
+3. Install Packages
 
     ``` npm install ```
 
-## Creating a dotenv file
+4. Creating a dotenv file
 
-The app needs to point to the hostname where the backend expects to receive HTTP requests. This has to be set before building the client.
+    The app needs to point to the hostname where the backend expects to receive HTTP requests. This has to be set before building the client.
 
-In order to set up all that, Create a new file named ".env" and copy the contents of env.example into it. The .env file has to be placed in the application's root directory (at the same level as dotenv example).
+    In order to set up all that, Create a new file named ".env" and copy the contents of env.example into it. The .env file has to be placed in the application's root directory (at the same level as dotenv example).
 
-```
-base_url= https://pwa-prototype.api.ushahidi.io/
-client_secret='35e7f0bca957836d05ca0492211b0ac707671261'
-client_id = 'ushahidiui' 
-form_id= 1
-```
-## How to run this?
+    ```
+    base_url= https://pwa-prototype.api.ushahidi.io/
+    client_secret='35e7f0bca957836d05ca0492211b0ac707671261'
+    client_id = 'ushahidiui' 
+    form_id= 1
+    ```
 
-To run the app run the command below in your terminal.
+5. How to run this?
 
-```npm run dev```
+    To run the app run the command below in your terminal.
+
+    ```npm run dev```
 
 
 ## Contributing to this project:
