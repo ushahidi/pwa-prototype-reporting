@@ -237,7 +237,7 @@ export default class Form extends React.Component {
     const DataPostedSuccess = props => {
       return props.posted ? <div className="success">Data was posted successfully.</div> : null;
     };
-
+    
     return (
       <div>
         <form onSubmit={(e)=> this.onSubmit(e) } >
@@ -250,6 +250,7 @@ export default class Form extends React.Component {
         <FormEmptyAlert isEmpty={this.state.isFormEmpty} />
         <ErrorOccurredAlert showError={this.state.showError} />
         <DataPostedSuccess posted={this.state.dataPosted} />
+        
       </div>
     );
   }
