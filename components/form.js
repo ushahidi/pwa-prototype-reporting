@@ -227,15 +227,15 @@ export default class Form extends React.Component {
   render() {
     const FormEmptyAlert = props => {
       return props.isEmpty ? (
-        <div>The form is empty, please fill before you submit.</div>
+        <div className="error"> The form is empty, please fill before you submit.</div>
       ) : null;
     };
     const ErrorOccurredAlert = props => {
-      return props.showError ? <div>An unexpected error occurred.</div> : null;
+      return props.showError ? <div className="alertMessage">An unexpected error occurred.</div> : null;
     };
 
     const DataPostedSuccess = props => {
-      return props.posted ? <div>Data was posted successfully.</div> : null;
+      return props.posted ? <div className="success">Data was posted successfully.</div> : null;
     };
 
     return (
