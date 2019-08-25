@@ -19,12 +19,11 @@ export default class Form extends React.Component {
     };
   }
 
-  isTokenValid() {
+  isTokenValid(token) {
     let isValid = false;
-
     const currentTime = new Date().getTime();
-    const tokenFetchTime = this.state.token.fetching_time;
-    const expirationTime = this.state.token.expires_in;
+    const tokenFetchTime = token.fetching_time;
+    const expirationTime = token.expires_in;
 
     if (currentTime < tokenFetchTime + expirationTime) {
       isValid = true;
@@ -36,13 +35,20 @@ export default class Form extends React.Component {
   getToken() {
     return new Promise((resolve, reject) => {
       let token = JSON.parse(localStorage.getItem("Bearer Token"));
-      if (!token || !this.isTokenValid()) {
+      // if offline and there is *any* token, we return OK
+      // this is because the offline mode won't do authentication for fetch
+      // so it only cares that there is *some* token.
+      if (!navigator.onLine && token) {
+        resolve(token);
+        return;
+      }
+
+      if (!token || !this.isTokenValid(token)) {
         fetchBearerToken().then(data => {
           if (!data || data.error) {
             this.setState({
               showError: true
             });
-
             reject(data);
             return;
           }
@@ -69,7 +75,8 @@ export default class Form extends React.Component {
       if (!formFields) {
         formFields = [];
       }
-      if (formFields.length === 0) {
+      // If we don't have any form fields we try to get them from the API. 
+      if (!(Array.isArray(formFields) && formFields.length)) {
         fetchFormFields().then(data => {
           this.setState({
             formFields: data.results
@@ -84,7 +91,10 @@ export default class Form extends React.Component {
           formFields: formFields
         });
       }
-    });
+    }).catch(err => {
+      // TODO: add some UI indicator that there is an issue? 
+      console.error("Could not get an access token from localStorage or the server");
+    })
   }
 
   isOnlineEvent = e => {
@@ -217,25 +227,23 @@ export default class Form extends React.Component {
   render() {
     const FormEmptyAlert = props => {
       return props.isEmpty ? (
-        <div>The form is empty, please fill before you submit.</div>
+        <div className="error"> The form is empty, please fill before you submit.</div>
       ) : null;
     };
     const ErrorOccurredAlert = props => {
-      return props.showError ? <div>An unexpected error occurred.</div> : null;
+      return props.showError ? <div className="alertMessage">An unexpected error occurred.</div> : null;
     };
 
     const DataPostedSuccess = props => {
-      return props.posted ? <div>Data was posted successfully.</div> : null;
+      return props.posted ? <div className="success">Data was posted successfully.</div> : null;
     };
 
     return (
       <div>
-        <form id="ushahidi-form">
+        <form onSubmit={(e)=> this.onSubmit(e) } >
           <this.FormInputs fields={this.state.formFields} />
           <div>
-            <button className="button" onClick={e => this.onSubmit(e)}>
-              Submit
-            </button>
+            <input type="submit" className="button" value="Submit"/>
           </div>
         </form>
 
