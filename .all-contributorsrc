@@ -5,7 +5,7 @@
   "imageSize": 100,
   "commit": false,
   "types": {
-    "custom": {
+    "mentoring": {
       "symbol": "👩‍🏫",
       "description": "Mentoring contributors.",
       "link": "[<%= symbol %>](<%= url %> \"<%= description %>\"),"
