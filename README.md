@@ -1,5 +1,5 @@
 # pwa-prototype-reporting
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 This project started as an experimental prototype to migrate the functionality of Ushahidi survey submissions into a small standalone project that can be deployed anywhere and in the future could be linked to any ushahidi.io deployment chosen by the user.
 
 # Offline support
@@ -85,6 +85,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="http://nidhikjha.github.io"><img src="https://avatars3.githubusercontent.com/u/39872794?v=4" width="100px;" alt="Nidhi Kumari"/><br /><sub><b>Nidhi Kumari</b></sub></a><br /><a href="https://github.com/ushahidi/pwa-prototype-reporting/commits?author=NidhiKJha" title="Code">💻</a> <a href="https://github.com/ushahidi/pwa-prototype-reporting/commits?author=NidhiKJha" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/Angamanga"><img src="https://avatars3.githubusercontent.com/u/8624777?v=4" width="100px;" alt="Anna Iosif"/><br /><sub><b>Anna Iosif</b></sub></a><br /><a href="#ideas-Angamanga" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/rowasc"><img src="https://avatars0.githubusercontent.com/u/2434401?v=4" width="100px;" alt="Romina Suarez"/><br /><sub><b>Romina Suarez</b></sub></a><br /><a href="#ideas-rowasc" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
