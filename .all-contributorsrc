@@ -6,9 +6,9 @@
   "commit": false,
   "types": {
     "custom": {
-      "symbol": " 👩‍🏫",
+      "symbol": "mentoring",
       "description": "Mentoring contributors.",
-      "link": "[<%= mentoring %>](<%= _ %> \"<%= Mentoring that lead to people being able to contribute %>\"),"
+      "link": "[<%= 👩‍🏫 %>](<%= _ %> \"<%= Mentoring that lead to people being able to contribute %>\"),"
     }
   },
   "contributors": [
