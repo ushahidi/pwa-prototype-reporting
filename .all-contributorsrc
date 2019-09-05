@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "NidhiKJha",
+      "name": "Nidhi Kumari",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/39872794?v=4",
+      "profile": "http://nidhikjha.github.io",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "pwa-prototype-reporting",
+  "projectOwner": "ushahidi",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
