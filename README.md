@@ -60,6 +60,16 @@ npm takes care of the rest of our dependencies.
 
 4. If you have any suggestions you can open an issue regarding the same.
 
+## Contributing
+* Create a new branch with a meaningful name `git checkout -b branch_name`.<br />
+* Develop your feature on Xcode IDE  and run it .<br />
+* Add the files you changed `git add file_name`.<br />
+* Commit your changes `git commit -m "Message briefly explaining the feature"`.<br />
+* Keep one commit per feature. If you forgot to add changes, you can edit the previous commit `git commit --amend`.<br />
+* Push to your repo `git push --set-upstream origin branch-name`.<br />
+* Go into [the Github repo](https://github.com/ushahidi/pwa-prototype-reporting.git) and create a pull request explaining your changes.<br />
+* If you are requested to make changes, edit your commit using `git commit --amend`, push again and the pull request will edit automatically.<br />
+* If the PR is related to any front end change, please attach relevant screenshots in the pull request description.<br/>
 
 # Deployment to zeit
 If you want to deploy this application to Zeit, you can 
