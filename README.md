@@ -62,7 +62,6 @@ npm takes care of the rest of our dependencies.
 
 ## Contributing
 * Create a new branch with a meaningful name `git checkout -b branch_name`.<br />
-* Develop your feature on Xcode IDE  and run it .<br />
 * Add the files you changed `git add file_name`.<br />
 * Commit your changes `git commit -m "Message briefly explaining the feature"`.<br />
 * Keep one commit per feature. If you forgot to add changes, you can edit the previous commit `git commit --amend`.<br />
